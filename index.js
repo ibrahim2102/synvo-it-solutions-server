@@ -50,10 +50,6 @@ app.get("/productss", (req, res) => {
 
 
 
-
-
-
-
 app.get('/', (req, res) => {
     res.send('Server is running');
 
