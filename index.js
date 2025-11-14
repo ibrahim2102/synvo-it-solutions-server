@@ -20,7 +20,7 @@ const uri = process.env.MONGODB_URI;
 
 
 
-// const uri = "mongodb+srv://new-user-01:BU1RiPXu4mdgMkul@cluster0.kgogmzm.mongodb.net/?appName=Cluster0";
+
 
 
 const client = new MongoClient(uri, {
