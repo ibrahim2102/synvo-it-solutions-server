@@ -264,8 +264,6 @@ app.patch('/users/:email', async (req, res) => {
 
 
 
-
-
          app.post('/products', async (req, res) => {
             const newProduct = req.body;
             const result = await productsCollection.insertOne(newProduct);
