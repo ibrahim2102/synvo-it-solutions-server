@@ -26,23 +26,23 @@ const client = new MongoClient(uri, {
 
 // routes
 
-app.get("/productss", (req, res) => {
-  const products = [
-    { id: 1, name: "Laptop", price: 1200 },
-    { id: 2, name: "Smartphone", price: 800 },
-    { id: 3, name: "Tablet", price: 500 },
-    { id: 4, name: "Monitor", price: 300 },
-    { id: 5, name: "Keyboard", price: 50 },
-  ];
-  res.json(products);
-});
+// app.get("/productss", (req, res) => {
+//   const products = [
+//     { id: 1, name: "Laptop", price: 1200 },
+//     { id: 2, name: "Smartphone", price: 800 },
+//     { id: 3, name: "Tablet", price: 500 },
+//     { id: 4, name: "Monitor", price: 300 },
+//     { id: 5, name: "Keyboard", price: 50 },
+//   ];
+//   res.json(products);
+// });
 
 
 
-app.get('/', (req, res) => {
-    res.send('Server is running');
+// app.get('/', (req, res) => {
+//     res.send('Server is running');
 
-})
+// })
 
 async function run () {
         
@@ -293,21 +293,28 @@ app.patch('/users/:email', async (req, res) => {
 
 
 
-         // await client.db("admin").command({ ping: 1 });
+         await client.db("admin").command({ ping: 1 });
          console.log("Pinged your deployment. You successfully connected to MongoDB!");
     }
 
     finally {
-
+              // await client.close();
     }
 
 }
 
-run().catch(console.dir);
+app.get('/', (req, res) => {
+    res.send('Server is running');
 
+})
+
+run().then( () => {
 
  app.listen(port, () => {
     console.log(`server is running on port: ${port} `);
 })
+
+}).catch(console.dir);
+
 
 
