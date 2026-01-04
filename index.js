@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const uri = process.env.MONGODB_URI;
+const uri = `${process.env.MONGODB_URI}`;
 
 
 const client = new MongoClient(uri, {
@@ -152,6 +152,94 @@ async function run () {
             }
     
          })
+
+         // GET /users/:email - Get user by email (for fetching role)
+app.get('/users/:email', async (req, res) => {
+    try {
+        const email = req.params.email;
+        const query = { email: email };
+        const user = await usersCollection.findOne(query);
+        
+        if (user) {
+            res.send(user);
+        } else {
+            res.status(404).send({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching user', error: error.message });
+    }
+});
+
+// GET /users - Get all users (for admin dashboard)
+app.get('/users', async (req, res) => {
+    try {
+        const users = await usersCollection.find({}).toArray();
+        res.send(users);
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching users', error: error.message });
+    }
+});
+
+// PATCH /users/:email - Update user (for updating role)
+app.patch('/users/:email', async (req, res) => {
+    try {
+        const email = req.params.email;
+        const updateData = req.body;
+        const query = { email: email };
+        const updateDoc = {
+            $set: updateData
+        };
+        
+        const result = await usersCollection.updateOne(query, updateDoc);
+        
+        if (result.matchedCount === 0) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+        
+        // Return updated user
+        const updatedUser = await usersCollection.findOne(query);
+        res.send(updatedUser);
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating user', error: error.message });
+    }
+});
+
+// UPDATE your existing POST /users endpoint to include default role
+app.post('/users', async (req, res) => {
+    try {
+        const newUser = req.body;
+        const email = req.body.email;
+        const query = { email: email };
+        const existingUser = await usersCollection.findOne(query);
+
+        if (existingUser) {
+            return res.send({ message: 'User already exists', user: existingUser });
+        } else {
+            // Set default role to 'user' if not provided
+            if (!newUser.role) {
+                newUser.role = 'user';
+            }
+            
+            const result = await usersCollection.insertOne(newUser);
+            res.send(result);
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'Error creating user', error: error.message });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           
 
