@@ -19,4 +19,4 @@ Key Features (Minimum 5 Features):
 
 ● Uses environment variables (MONGODB_URI) for secure database configuration.
 
-● Deployed on VERCEL (https://synvo-it-solutions-server.vercel.app).
+● Deployed on VERCEL https://synvo-it-solution-server.vercel.app
